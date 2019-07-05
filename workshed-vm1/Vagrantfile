@@ -1,0 +1,18 @@
+#-*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/centos-7.3"
+
+   config.vm.define "Workshed-VM1" do |work1|
+    config.vm.hostname = "Workshed-VM11"
+    config.vm.network :public_network, ip: "172.16.28.57", netmask: "255.255.254.0"
+    work1.disksize.size = '15GB'
+    config.vm.provision "shell",
+    run: "always",
+    inline: "route add default gw 172.16.28.1"
+    config.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--memory", "1536"]
+      v.customize ["modifyvm", :id, "--cpus", "2"]
+end
+end
+end

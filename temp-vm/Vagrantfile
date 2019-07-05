@@ -1,0 +1,17 @@
+#-*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/centos-7.3"
+   config.vm.define "temp-vm" do |vm_temp|
+    config.vm.hostname = "temp-vm"
+    config.vm.network :private_network, ip: "172.16.28.56", netmask: "255.255.254.0"
+    vm_temp.disksize.size = '10GB'
+    config.vm.provision "shell",
+    run: "always",
+    inline: "route add default gw 172.16.28.1"
+    config.vm.provider :virtualbox do |v|
+      v.customize ["modifyvm", :id, "--memory", "4096"]
+      v.customize ["modifyvm", :id, "--cpus", "2"]
+end
+end
+end
